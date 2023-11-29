@@ -15,7 +15,7 @@ def getdata():
 #     print(response)
 #     return render_template('index.html', data = data)
 
-@api.route('/carscreate', methods = ['POST'])
+@api.route('/cars', methods = ['POST'])
 @token_required
 def create_car(current_user_token):
     Year = request.json['Year']
@@ -33,7 +33,7 @@ def create_car(current_user_token):
     response = car_schema.dump(car)
     return jsonify(response)
 
-@api.route('/searchcars', methods = ['GET'])
+@api.route('/cars', methods = ['GET'])
 @token_required
 def get_car(current_user_token):
     a_user = current_user_token.token
@@ -43,7 +43,7 @@ def get_car(current_user_token):
 
 @api.route('/cars/<id>', methods = ['GET'])
 @token_required
-def get_car(current_user_token, id):
+def get_single_car(current_user_token, id):
     a_user = current_user_token.token
     if a_user == current_user_token.token:
         car = Car.query.get(id)
@@ -53,7 +53,7 @@ def get_car(current_user_token, id):
         return jsonify({"message": "Valid Token Required"}),401
 
 # UPDATE endpoint
-@api.route('/carsupdate/<id>', methods = ['POST','PUT'])
+@api.route('/cars/<id>', methods = ['POST','PUT'])
 @token_required
 def update_car(current_user_token,id):
     car = Car.query.get(id) 
@@ -68,7 +68,7 @@ def update_car(current_user_token,id):
 
 
 # DELETE car ENDPOINT
-@api.route('/carsdelete/<id>', methods = ['DELETE'])
+@api.route('/cars/<id>', methods = ['DELETE'])
 @token_required
 def delete_car(current_user_token, id):
     car = Car.query.get(id)
