@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template
 from helpers import token_required
-from models import db, User, Contact, contact_schema, contacts_schema
+from models import db, User, Cars, car_schema, cars_schema
 api = Blueprint('api',__name__, url_prefix='/api')
 
 
@@ -17,7 +17,7 @@ def getdata():
 
 @api.route('/cars', methods = ['POST'])
 @token_required
-def create_car(current_user_token):
+def create_cars(current_user_token):
     Year = request.json['Year']
     Make = request.json['Make']
     Model = request.json['Model']
@@ -25,19 +25,19 @@ def create_car(current_user_token):
 
     print(f'BIG TESTER: {current_user_token.token}')
 
-    car = Car(Year, Make, Model, user_token = user_token )
+    cars = Cars(Year, Make, Model, user_token = user_token )
 
-    db.session.add(car)
+    db.session.add(cars)
     db.session.commit()
 
-    response = car_schema.dump(car)
+    response = car_schema.dump(cars)
     return jsonify(response)
 
 @api.route('/cars', methods = ['GET'])
 @token_required
 def get_car(current_user_token):
     a_user = current_user_token.token
-    car = Car.query.filter_by(user_token = a_user).all()
+    cars = Cars.query.filter_by(user_token = a_user).all()
     response = car_schema.dump(car)
     return jsonify(response)
 
@@ -46,7 +46,7 @@ def get_car(current_user_token):
 def get_single_car(current_user_token, id):
     a_user = current_user_token.token
     if a_user == current_user_token.token:
-        car = Car.query.get(id)
+        cars = Cars.query.get(id)
         response = car_schema.dump(car)
         return jsonify(response)
     else:
