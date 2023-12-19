@@ -18,14 +18,14 @@ def getdata():
 @api.route('/cars', methods = ['POST'])
 @token_required
 def create_cars(current_user_token):
-    Year = request.json['Year']
-    Make = request.json['Make']
-    Model = request.json['Model']
+    model = request.json['model']
+    make = request.json['make']
+    year = request.json['year']
     user_token = current_user_token.token
 
     print(f'BIG TESTER: {current_user_token.token}')
 
-    cars = Cars(Year, Make, Model, user_token = user_token )
+    cars = Cars(model, make, year, user_token = user_token )
 
     db.session.add(cars)
     db.session.commit()
@@ -37,7 +37,7 @@ def create_cars(current_user_token):
 @token_required
 def get_car(current_user_token):
     a_user = current_user_token.token
-    cars = Cars.query.filter_by(user_token = a_user).all()
+    car = Cars.query.filter_by(user_token = a_user).all()
     response = car_schema.dump(car)
     return jsonify(response)
 
@@ -46,7 +46,7 @@ def get_car(current_user_token):
 def get_single_car(current_user_token, id):
     a_user = current_user_token.token
     if a_user == current_user_token.token:
-        cars = Cars.query.get(id)
+        car = Cars.query.get(id)
         response = car_schema.dump(car)
         return jsonify(response)
     else:
