@@ -36,9 +36,11 @@ def create_cars(current_user_token):
 @api.route('/cars', methods = ['GET'])
 @token_required
 def get_car(current_user_token):
+    print(current_user_token)
     a_user = current_user_token.token
     car = Cars.query.filter_by(user_token = a_user).all()
     response = car_schema.dump(car)
+    print(a_user)
     return jsonify(response)
 
 @api.route('/cars/<id>', methods = ['GET'])
