@@ -57,7 +57,7 @@ def get_single_car(current_user_token, id):
 # UPDATE endpoint
 @api.route('/cars/<id>', methods = ['POST','PUT'])
 @token_required
-def update_car(current_user_token):
+def update_car(current_user_token, id):
     car = Cars.query.get(id) 
     car.year = request.json['year']
     car.make = request.json['make']
