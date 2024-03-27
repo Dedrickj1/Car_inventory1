@@ -58,7 +58,7 @@ def get_single_car(current_user_token, id):
 @api.route('/cars/<id>', methods = ['POST','PUT'])
 @token_required
 def update_car(current_user_token):
-    car = Car.query.get(id) 
+    car = Cars.query.get(id) 
     car.year = request.json['year']
     car.make = request.json['make']
     car.model = request.json['model']
@@ -72,8 +72,8 @@ def update_car(current_user_token):
 # DELETE car ENDPOINT
 @api.route('/cars/<id>', methods = ['DELETE'])
 @token_required
-def delete_single_car(current_user_token):
-    car = Car.query.get(id)
+def delete_single_car(current_user_token, id):
+    car = Cars.query.get(id)
     db.session.delete(car)
     db.session.commit()
     response = car_schema.dump(car)
