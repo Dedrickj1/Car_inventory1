@@ -25,7 +25,7 @@ def create_cars(current_user_token):
 
     print(f'BIG TESTER: {current_user_token.token}')
 
-    cars = Cars(model, make, year, user_token = user_token )
+    cars = Cars(year, make, model, user_token = user_token )
 
     db.session.add(cars)
     db.session.commit()
@@ -39,7 +39,7 @@ def get_car(current_user_token):
     print(current_user_token)
     a_user = current_user_token.token
     car = Cars.query.filter_by(user_token = a_user).all()
-    response = car_schema.dump(car)
+    response = cars_schema.dump(car)
     print(a_user)
     return jsonify(response)
 
